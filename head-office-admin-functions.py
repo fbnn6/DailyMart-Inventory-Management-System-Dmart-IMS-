@@ -1,3 +1,4 @@
+# === HEAD OFFICE ADMIN MENU ===
 def head_office_admin_menu():
     while True:
         print("\n===== HEAD OFFICE ADMIN MENU =====")

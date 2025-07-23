@@ -1,13 +1,42 @@
+def head_office_admin_menu():
+    while True:
+        print("\n===== HEAD OFFICE ADMIN MENU =====")
+        print("1. View Multi-Store Inventory")
+        print("2. Manage Suppliers & Products")
+        print("3. Approve Restock Requests")
+        print("4. Generate Reports")
+        print("5. Logout")
+
+        choice = input("Select option (1–5): ").strip()
+
+        if choice == "1":
+            view_multi_store_inventory()
+        elif choice == "2":
+            manage_suppliers_and_products()
+        elif choice == "3":
+            approve_restock_requests()
+        elif choice == "4":
+            generate_reports()
+        elif choice == "5":
+            print("Logging out of Admin Portal...")
+            break
+        else:
+            print("Invalid input. Please select from 1 to 5.")
+
+
+
+
+
 # === MULTI-STORE INVENTORY OVERVIEW ===
 def view_multi_store_inventory():
     try:
         with open("inventory.txt", "r") as file:
             print("\n--- MULTI-STORE INVENTORY OVERVIEW ---")
-            print(f"{'ProductID':<8} {'ProductName':<20} {'Category':<15} {'Outlet':<12} {'Qty':<5} {'Threshold':<9}")
+            print(f"{'ProductID':<8} {'ProductName':<20} {'Category':<15} {'OutletID':8} {'Outlet':<12} {'Qty':<5} {'Threshold':<9}")
             for line in file:
                 parts = line.strip().split(",")
-                if len(parts) == 6:
-                    print(f"{parts[0]:<8} {parts[1]:<20} {parts[2]:<15} {parts[3]:<12} {parts[4]:<5} {parts[5]:<9}")
+                if len(parts) == 7:
+                    print(f"{parts[0]:<8} {parts[1]:<20} {parts[2]:<15} {parts[3]:<8} {parts[4]:<12} {parts[5]:<5} {parts[6]:<9}")
     except FileNotFoundError:
         print("Error: inventory.txt not found.")
 
@@ -23,7 +52,7 @@ def manage_suppliers_and_products():
         choice = input("Enter choice (1–4): ").strip()
 
         if choice == "1":
-            supplier_id = input("Supplier ID (e.g., S001): ")
+            supplier_id = input("Supplier ID (e.g., SPD001): ")
             name = input("Supplier Name: ")
             category = input("Supplied Category: ")
             route = input("Delivery Route (RouteA, RouteB, RouteC): ")
@@ -59,14 +88,15 @@ def manage_suppliers_and_products():
                 print("suppliers.txt not found.")
 
         elif choice == "3":
-            product_id = input("Product ID (e.g., P105): ")
+            product_id = input("Product ID (e.g., P0001): ")
             name = input("Product Name: ")
             category = input("Category: ")
-            outlet = input("Outlet Name (e.g., Outlet1): ")
+            outlet_id = input("Outlet ID (e.g., STD001): ")
+            outlet = input("Outlet Name (e.g., Outlet_A): ")
             quantity = input("Initial Quantity: ")
             threshold = input("Reorder Threshold: ")
             with open("inventory.txt", "a") as f:
-                f.write(f"{product_id},{name},{category},{outlet},{quantity},{threshold}\n")
+                f.write(f"{product_id},{name},{category},{outlet_id},{outlet},{quantity},{threshold}\n")
             print("Product added to inventory.")
 
         elif choice == "4":

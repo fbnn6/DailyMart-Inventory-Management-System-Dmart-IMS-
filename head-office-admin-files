@@ -1,5 +1,6 @@
 inventory.txt
 suppliers.txt
-restock_requests.txt
+reorder_requests.tx
 store_history.txt
 reports.txt
+approved_orders.tx

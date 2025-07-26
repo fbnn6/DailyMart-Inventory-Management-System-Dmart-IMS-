@@ -1,0 +1,2 @@
+STD001,P0001,Chips,5,sold,pending
+STD003,P0010,Matcha,4,sold,pending

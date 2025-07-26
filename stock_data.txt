@@ -1,0 +1,15 @@
+#outlet_id,category,product_name,product_id,quantity
+STD001,snacks,Chips,P0001,30
+STD001,beverages,Soda,P0002,15
+STD001,personal care,Shampoo,P0003,40
+STD001,household essentials,Laundry Detergent,P0004,10
+
+STD002,snacks,Potato Crips,P0005,50
+STD002,beverages,Pepsi,P0006,35
+STD002,personal care,Hair Conditioner,P0007,24
+STD002,household essentials,Dish Sponge,PP008,10
+
+STD003,snacks,Super Ring,P0009,15
+STD003,beverages,Matcha,P0010,9
+STD003,personal care,Sunscreen,P0011,12
+STD003,household essentials,Stain Remover,P0012,21

@@ -1,0 +1,5 @@
+#outlet_id, category, product_name, product_id, quantity
+STD001, snacks, Chips, P0001, 30
+STD001, beverages, Soda, P0002, 15
+STD001, personal care, Shampoo, P0003, 40
+STD001, household essentials, Laundry Detergent, P0004, 10

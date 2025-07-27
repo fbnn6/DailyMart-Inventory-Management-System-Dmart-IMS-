@@ -1,5 +1,0 @@
-#outlet_id, category, product_name, product_id, quantity
-STD003 , snacks, Super Ring, P0009, 15
-STD003 , beverages, Matcha, P0010, 11
-STD003 , personal care, Sunscreen, P0011, 12
-STD003 , household essentials, Stain Remover, P0012, 21

@@ -48,9 +48,6 @@ def login(users):
         print("Access Denied. Please try again.")
         return None
 
-
-
-# === MAIN MENU ===
 def main():
     users = load_users("users.txt")
 

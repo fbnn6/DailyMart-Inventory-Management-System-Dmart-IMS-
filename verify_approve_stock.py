@@ -1,5 +1,5 @@
-#GROUP 1s
-#TP123456, TP987654, TP0129834
+# GROUP 1s
+# TP123456, TP987654, TP0129834
 
 from datetime import datetime
 
@@ -23,7 +23,7 @@ def append_to_file(filename, line):
     with open(filename, 'a') as file:
         file.write(line + '\n')
 
-def verify_and_approve_stock_changes(outlet_id):
+def receive_delivery(outlet_id):
     updates = load_file(STOCK_UPDATES_FILE)
     pending = [u for u in updates if u.endswith('pending') and u.startswith(outlet_id)]
 
@@ -31,6 +31,7 @@ def verify_and_approve_stock_changes(outlet_id):
         print(f"No pending stock changes for {outlet_id}.")
         return
 
+    print(f"\nPending Deliveries for {outlet_id}:")
     for i, update in enumerate(pending):
         print(f"{i + 1}. {update}")
 
@@ -56,8 +57,9 @@ def verify_and_approve_stock_changes(outlet_id):
     updates.remove(approved_line)
     save_file(STOCK_UPDATES_FILE, updates)
 
-    print("Stock change approved.")
+    print("Stock delivery approved and recorded.")
 
+# Optional for testing this file alone
 if __name__ == "__main__":
     outlet = input("Enter your outlet ID (e.g. STD001): ").strip().upper()
-    verify_and_approve_stock_changes(outlet)
+    receive_delivery(outlet)

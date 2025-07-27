@@ -1,5 +1,0 @@
-#outlet_id, category, product_name, product_id, quantity
-STD002 , snacks, Potato Crips, P0005, 50
-STD002 , beverages, Pepsi, P0006, 35
-STD002 , personal care, Hair Conditioner, P0007, 24
-STD002 , household essentials, Dish Sponge, PP008, 10

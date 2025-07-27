@@ -1,5 +1,0 @@
-2025-07-26 13:59:39, STD001, household essentials, Laundry Detergent, P0004, Qty: 6
-2025-07-26 17:38:28, STD001, household essentials, Laundry Detergent, P0004, Qty: 5
-2025-07-26 17:45:45, STD001, household essentials, Laundry Detergent, P0004, Qty: 3
-2025-07-26 22:49:20, STD001, beverages, Soda, P0002, Qty: 5
-2025-07-27 00:03:35, STD001, personal care, Shampoo, P0003, Qty: 5

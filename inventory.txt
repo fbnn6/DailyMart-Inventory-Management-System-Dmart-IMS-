@@ -1,4 +1,3 @@
-#product_id,product_name,category,outlet_id,quantity,threshold
 SP0001,Chips,snacks,STD001,60,10
 SP0011,Sunscreen,personal care, STD003,32,10
 SP0010,Matcha,beverages,STD003,20,10

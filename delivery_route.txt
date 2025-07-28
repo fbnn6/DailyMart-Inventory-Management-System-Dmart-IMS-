@@ -1,0 +1,6 @@
+# Delivery Route Information
+# Format: RouteID, RouteName, Region, AssignedDriver, VehicleCapacity
+R0001, Central City Route, Kuala Lumpur, Muthu , 450
+R0002, Northern Suburbs Loop, Petaling Jaya, Soh Wui Kong, 300
+R0003, Southern Industrial Zone, Shah Alam, Ahmad Bin Hussin, 650
+

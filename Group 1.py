@@ -816,7 +816,8 @@ def simulate_inventory_dispatch():
     for outlet_id, route_id in outlet_mappings.items():
         if route_id not in dispatch_plan:
             dispatch_plan[route_id] = []
-        utlet {outlet_id} (e.g., 5x Product A, 10x Product B)")
+       
+    dispatch_plan[route_id].append(f"Simulated need for Outlet {outlet_id} (e.g., 5x Product A, 10x Product B)")
 
     if dispatch_plan:
         print("\n--- Proposed Dispatch Plan by Route ---")

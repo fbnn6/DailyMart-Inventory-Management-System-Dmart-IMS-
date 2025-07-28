@@ -257,7 +257,7 @@ def generate_stock_alerts_from_memory(stocks, threshold=10, log_file="stock_aler
 
 
 
-# === SEARCH PRODUCTS ===
+# === SEARCH STOCK ===
 def search_inventory(stock_files):
     stocks = load_inventory(stock_files)
 

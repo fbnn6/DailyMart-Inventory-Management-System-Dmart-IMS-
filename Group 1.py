@@ -504,7 +504,7 @@ def manage_suppliers_and_products():
             supplier_id = input("Supplier ID (e.g., SPD001): ")
             name = input("Supplier Name: ")
             category = input("Supplied Category: ")
-            route = input("Delivery Route (RouteA, RouteB, RouteC): ")
+            route = input("Delivery Route (R0001, R0002, R0003): ")
             with open("suppliers.txt", "a") as f:
                 f.write(f"{supplier_id},{name},{category},{route}\n")
             print("Supplier added successfully.")

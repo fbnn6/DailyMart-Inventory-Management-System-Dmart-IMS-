@@ -1,0 +1,4 @@
+# Outlet to Delivery Route Mapping
+# Format: OutletID,RouteID
+STD001,R0002
+STD003,R0003

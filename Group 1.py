@@ -452,7 +452,8 @@ def head_office_admin_menu():
         print("2. Manage Suppliers & Products")
         print("3. Approve Reorders")
         print("4. Generate Reports")
-        print("5. Logout")
+        print("5. Delivery Route Planning")
+        print("6. Logout")
 
         choice = input("Select option (1–5): ").strip()
 
@@ -465,6 +466,8 @@ def head_office_admin_menu():
         elif choice == "4":
             generate_reports()
         elif choice == "5":
+            delivery_route_planning_menu()
+        elif choice == "6":
             print("Logging out of Admin Portal...")
             break
         else:
@@ -635,9 +638,197 @@ def generate_reports():
     except FileNotFoundError as e:
         print(f"Missing file: {e.filename}")
 
+ 
+
+# === DELIVERY ROUTE PLANNING ===
+DELIVERY_ROUTES_FILE = "delivery_route.txt"
+OUTLET_ROUTES_MAPPING_FILE = "outlet_routes_map.txt" # New file to store outlet-route assignments
+
+def load_delivery_routes(filename=DELIVERY_ROUTES_FILE):
+    routes = {}
+    try:
+        with open(filename, 'r') as file:
+            for line in file:
+                line = line.strip()
+                if line.startswith('#') or not line:
+                    continue
+                parts = [p.strip() for p in line.split(',')]
+                if len(parts) == 5:
+                    route_id, route_name, region, assigned_driver, vehicle_capacity = parts
+                    routes[route_id] = {
+                        'route_name': route_name,
+                        'region': region,
+                        'assigned_driver': assigned_driver,
+                        'vehicle_capacity': int(vehicle_capacity)
+                    }
+                else:
+                    print(f" Skipping malformed line in {filename}: {line}")
+    except FileNotFoundError:
+        print(f" {filename} not found. Please create it.")
+    return routes
+
+def load_outlet_routes_mapping(filename=OUTLET_ROUTES_MAPPING_FILE):
+    mapping = {} # {outlet_id: route_id}
+    try:
+        with open(filename, 'r') as file:
+            for line in file:
+                line = line.strip()
+                if line.startswith('#') or not line:
+                    continue
+                parts = [p.strip() for p in line.split(',')]
+                if len(parts) == 2:
+                    outlet_id, route_id = parts
+                    mapping[outlet_id] = route_id
+                else:
+                    print(f" Skipping malformed line in {filename}: {line}")
+    except FileNotFoundError:
+        print(f" {filename} not found. No outlet-route mappings loaded.")
+    return mapping
+
+def save_outlet_routes_mapping(mapping, filename=OUTLET_ROUTES_MAPPING_FILE):
+    try:
+        with open(filename, 'w') as file:
+            file.write("# Outlet to Delivery Route Mapping\n")
+            file.write("# Format: OutletID,RouteID\n")
+            for outlet_id, route_id in mapping.items():
+                file.write(f"{outlet_id},{route_id}\n")
+        print("Outlet-route mappings saved successfully.")
+    except Exception as e:
+        print(f"Error saving outlet-route mappings: {e}")
+
+def delivery_route_planning_menu():
+    while True:
+        print("\n===== DELIVERY ROUTE PLANNING =====")
+        print("1. View All Delivery Routes")
+        print("2. Assign Outlets to Routes")
+        print("3. Dispatch Inventory (Simulated)")
+        print("4. Return to Admin Menu")
+
+        choice = input("Select option (1–4): ").strip()
+
+        if choice == "1":
+            view_all_delivery_routes()
+        elif choice == "2":
+            assign_outlets_to_routes()
+        elif choice == "3":
+            simulate_inventory_dispatch()
+        elif choice == "4":
+            print("Returning to Head Office Admin Menu...")
+            break
+        else:
+            print("Invalid input. Please select from 1 to 4.")
+
+def view_all_delivery_routes():
+    routes = load_delivery_routes()
+    if not routes:
+        print("No delivery routes defined.")
+        return
+
+    print("\n--- ALL DELIVERY ROUTES ---")
+    print(f"{'RouteID':<8} {'Route Name':<25} {'Region':<15} {'Driver':<20} {'Capacity':<10}")
+    for route_id, data in routes.items():
+        print(f"{route_id:<8} {data['route_name']:<25} {data['region']:<15} {data['assigned_driver']:<20} {data['vehicle_capacity']:<10}")
+
+    outlet_mappings = load_outlet_routes_mapping()
+    if outlet_mappings:
+        print("\n--- Outlet Assignments ---")
+        for outlet_id, route_id in outlet_mappings.items():
+            route_name = routes.get(route_id, {}).get('route_name', 'N/A')
+            print(f"Outlet {outlet_id} is assigned to Route {route_id} ({route_name})")
+    else:
+        print("No outlets currently assigned to routes.")
 
 
+def assign_outlets_to_routes():
+    outlets = {} 
+    stock_files = ["STD001_stocks.txt", "STD002_stocks.txt", "STD003_stocks.txt"]
+    for stocks_file in stock_files:
+        try:
+            with open(stocks_file, "r") as file:
+                for line in file:
+                    line = line.strip()
+                    if line.startswith('#') or not line:
+                        continue
+                    parts = [p.strip() for p in line.split(',')]
+                    if len(parts) >= 1:
+                        outlet_id = parts[0]
+                        outlets[outlet_id] = True 
+        except FileNotFoundError:
+            pass 
+    if not outlets:
+        print("No outlets found in stock files to assign routes to.")
+        return
 
+    routes = load_delivery_routes()
+    if not routes:
+        print("No delivery routes defined. Cannot assign outlets.")
+        return
+
+    current_mapping = load_outlet_routes_mapping()
+
+    print("\n--- ASSIGN OUTLETS TO DELIVERY ROUTES ---")
+    print("Available Outlets:", ", ".join(sorted(outlets.keys())))
+    print("Available Routes:")
+    for route_id, data in routes.items():
+        print(f" - {route_id}: {data['route_name']}")
+
+    while True:
+        outlet_id = input("Enter Outlet ID to assign (or 'done' to finish): ").strip().upper()
+        if outlet_id == 'DONE':
+            break
+        if outlet_id not in outlets:
+            print("Invalid Outlet ID. Please enter an existing outlet.")
+            continue
+
+        route_id = input(f"Enter Route ID for {outlet_id}: ").strip().upper()
+        if route_id not in routes:
+            print("Invalid Route ID. Please enter an existing route.")
+            continue
+
+        current_mapping[outlet_id] = route_id
+        print(f"Outlet {outlet_id} assigned to Route {route_id}.")
+
+    save_outlet_routes_mapping(current_mapping)
+
+def simulate_inventory_dispatch():
+    print("\n--- SIMULATE INVENTORY DISPATCH ---")
+    routes = load_delivery_routes()
+    if not routes:
+        print("No delivery routes defined.")
+        return
+
+    outlet_mappings = load_outlet_routes_mapping()
+    if not outlet_mappings:
+        print("No outlets assigned to routes. Please assign outlets first.")
+        return
+
+    
+
+    print("This function simulates dispatching inventory based on assigned routes.")
+    print("It would typically involve:")
+    print("1. Identifying products needing replenishment at each outlet (e.g., from restock requests or low stock alerts).")
+    print("2. Grouping these needs by delivery route.")
+    print("3. Generating a 'delivery manifest' for each route.")
+    print("4. Updating central warehouse inventory (if applicable) and outlet inventory upon 'delivery'.")
+
+    
+    dispatch_plan = {}
+    for outlet_id, route_id in outlet_mappings.items():
+        if route_id not in dispatch_plan:
+            dispatch_plan[route_id] = []
+        utlet {outlet_id} (e.g., 5x Product A, 10x Product B)")
+
+    if dispatch_plan:
+        print("\n--- Proposed Dispatch Plan by Route ---")
+        for route_id, needs in dispatch_plan.items():
+            print(f"\nRoute: {route_id} ({routes[route_id]['route_name']}) - Driver: {routes[route_id]['assigned_driver']}")
+            for need in needs:
+                print(f"  - {need}")
+        print("\n(This is a simulation. Actual dispatch would involve stock updates and delivery logs.)")
+    else:
+        print("No dispatch needs identified for current routes.")
+
+  
 # === CLOSING ===
 if __name__ == "__main__":
     main()
